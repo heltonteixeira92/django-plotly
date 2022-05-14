@@ -33,3 +33,20 @@ class Command(BaseCommand):
 
         delta = now - previous_year
 
+        for n in range(delta.days):
+            day = previous_year + timezone.timedelta(days=n)
+
+            # with probability 0.5, skip making any commits
+            if random.uniform(0, 1) > 0.5:
+                continue
+
+            # create a random number of commits for this day
+            num_commits = random.randint(1, 10)
+            for _ in range(num_commits):
+                Commit.objects.create(
+                    user=user,
+                    repository=repo,
+                    created=day,
+                    code="print('hello world')"
+                )
+
